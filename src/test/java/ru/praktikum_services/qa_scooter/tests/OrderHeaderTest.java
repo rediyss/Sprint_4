@@ -12,7 +12,7 @@ import ru.praktikum_services.qa_scooter.pageobject.OrderPage;
 import ru.praktikum_services.qa_scooter.pageobject.MainPage;
 
 @RunWith(Parameterized.class)
-public class OrderTest {
+public class OrderHeaderTest {
     private WebDriver driver;
 
     private final String firstName;
@@ -25,7 +25,7 @@ public class OrderTest {
     private final boolean black;
     private final String comment;
 
-    public OrderTest(String firstName, String secondName, String address, String metro, String phone, String date, boolean grey, boolean black, String comment){
+    public OrderHeaderTest(String firstName, String secondName, String address, String metro, String phone, String date, boolean grey, boolean black, String comment){
         this.firstName = firstName;
         this.secondName = secondName;
         this.address = address;
@@ -58,7 +58,7 @@ public class OrderTest {
 
         MainPage mainPage = new MainPage(driver);
         mainPage.acceptCookies();
-        mainPage.clickOrderMiddleButton();
+        mainPage.clickOrderHeaderButton();
 
         OrderPage orderPage = new OrderPage(driver);
         orderPage.enterFirstForm(firstName, secondName, address, metro, phone);
