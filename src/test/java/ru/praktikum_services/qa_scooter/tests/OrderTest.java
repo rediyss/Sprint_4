@@ -24,8 +24,9 @@ public class OrderTest {
     private final boolean grey;
     private final boolean black;
     private final String comment;
+    private final String buttonType;
 
-    public OrderTest(String firstName, String secondName, String address, String metro, String phone, String date, boolean grey, boolean black, String comment){
+    public OrderTest(String firstName, String secondName, String address, String metro, String phone, String date, boolean grey, boolean black, String comment, String buttonType){
         this.firstName = firstName;
         this.secondName = secondName;
         this.address = address;
@@ -35,30 +36,35 @@ public class OrderTest {
         this.grey = grey;
         this.black = black;
         this.comment = comment;
+        this.buttonType = buttonType;
     }
 
     @Parameterized.Parameters
     public static Object[][] testData(){
         return new Object[][]{
-                {"Иван", "Петров", "ул. Ленина, 1", "Черкизовская", "89001112233", "24.05.2025", true, false, "оставить у двери"},
-                {"Анна", "Козлова", "пр-т Мира, 5", "ВДНХ", "89992223344", "25.05.2025", false, true, "не звонить"},
+                {"Иван", "Петров", "ул. Ленина, 1", "Черкизовская", "89001112233", "24.05.2025", true, false, "оставить у двери", "header"},
+                {"Анна", "Козлова", "пр-т Мира, 5", "ВДНХ", "89992223344", "25.05.2025", false, true, "не звонить", "middle"},
         };
     }
+
     @Before
     public void setUp() {
-        // Запускаем браузер без headless
         driver = new ChromeDriver();
-        driver.manage().window(); // чтобы точно был виден
+        driver.manage().window();
     }
 
     @Test
     public void testFullOrder(){
-
         driver.get(BASE_URL);
 
         MainPage mainPage = new MainPage(driver);
         mainPage.acceptCookies();
-        mainPage.clickOrderMiddleButton();
+
+        if ("header".equals(buttonType)) {
+            mainPage.clickOrderHeaderButton();
+        } else {
+            mainPage.clickOrderMiddleButton();
+        }
 
         OrderPage orderPage = new OrderPage(driver);
         orderPage.enterFirstForm(firstName, secondName, address, metro, phone);
@@ -66,6 +72,7 @@ public class OrderTest {
 
         Assert.assertTrue("Заказ не подтвержден", orderPage.isOrderConfirmed());
     }
+
     @After
     public void teardown(){
         driver.quit();

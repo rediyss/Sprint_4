@@ -45,6 +45,7 @@ public class MainPageTest {
     @Before
     public void setUp() {
         driver = new ChromeDriver();
+        driver.manage().window();
     }
 
     @Test
